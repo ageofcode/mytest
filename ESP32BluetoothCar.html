@@ -13,9 +13,9 @@
 <pre id = "data"></pre>
 </br>
 <div id="dataInput" style="display: none;">
-    <input id="writeData">
-    <button id="writeButton" onclick = "sendCode()">Start</button> <br>
-	<button id="writeButton" onclick = "sendCode()">Stop</button>
+    <p id="DeviceName"> </p>
+    <button id="writeButton" onclick = "sendCode(getThisValue(this))">Start</button> <br>
+	<button id="writeButton2" onclick = "sendCode(getValue(writeButton2))">Stop</button>
 </div>
 </br>
 <pre id = "log"></pre>
@@ -45,7 +45,7 @@ function onDevice()
 			setDisabled("writeButton", false);
 			setDisplay("dataInput", "inline");
 			setContent("deviceName", "Device ID: " + bleDevice.id);
-			setValue("writeData", bleDevice.name);
+			setValue("deviceName", bleDevice.name);
 			bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
 		})
 		.then(any => initChar(btnChar, handleBtn))
@@ -130,11 +130,23 @@ function setData(value)
 	return document.getElementById('data').innerHTML = value;
 }
 
-function sendCode()
-{
+function getthisValue(theObject) {
 	let encoder = new TextEncoder('utf-8');
-	let data = encoder.encode(document.getElementById('writeData').value);
-	
+	let data = encoder.encode(theObject.value);
+	return data;
+}
+
+function getValue(id) {
+	let encoder = new TextEncoder('utf-8');
+	let data = encoder.encode(document.getElementById('id').value);
+	return data;
+}
+
+function sendCode(data)
+{
+//	let encoder = new TextEncoder('utf-8');
+//	let data = encoder.encode(document.getElementById('writeData').value);
+	console.log("Data:",data);
 	getChar(dataChar)
 	.then(ch => ch.writeValue(data))
 	.then(any => setDisabled("writeButton", true))
