@@ -130,7 +130,7 @@ function setData(value)
 	return document.getElementById('data').innerHTML = value;
 }
 
-function getthisValue(theObject) {  //When using "this" as parameter, can get clicked button (object).
+function getThisValue(theObject) {  //When using "this" as parameter, can get clicked button (object).
 	let encoder = new TextEncoder('utf-8');
 	let data = encoder.encode(theObject.value);
 	return data;
