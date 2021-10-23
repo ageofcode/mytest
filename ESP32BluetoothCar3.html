@@ -136,7 +136,7 @@ function getThisValue(theObject) {  //When using "this" as parameter, can get cl
 	return data;
 }
 
-function getValue(id) {  // get object's value, object was found by its id. Old way to get object's value.
+function getValue(id) {  // get object's value, object was found by its id. Old way to get object's value. Does not work!!!
 	let encoder = new TextEncoder('utf-8');
 	let data = encoder.encode(document.getElementById('id').value);
 	return data;
