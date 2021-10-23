@@ -149,7 +149,7 @@ function sendCode(data)
 	console.log("Data:",data);
 	getChar(dataCharacteristic)   //parameter is bluetooth's Chracteristic UUID, connect via bluetooth, and get chracteristic servic.
 	.then(ch => ch.writeValue(data))  // writeValue() or readValue() belong to charateristic servce.
-	.then(any => setDisabled("startButton", true))  //only change startButton, do not change other button , for temperarary test
+	//.then(any => setDisabled("startButton", true))  //only change startButton, do not change other button , for temperarary test
 	.catch(error => console.log(error));
 }
 
