@@ -50,7 +50,7 @@ function onDevice()
 			bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
 		})
 		//.then(any => initChar(sensorChracteristic, handleSensor))
-		.then(any => initChar(dataCharacteristic, handleData))
+		//.then(any => initChar(dataCharacteristic, handleData))
 		.then(any => readChar(dataCharacteristic, setData))
 		.catch(error => 
 			{
