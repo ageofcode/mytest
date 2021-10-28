@@ -96,7 +96,14 @@ class SingleGamepad {
         }
     }
     
-    getAxis(currentMSecs,i) {
+    bleconnect() {
+        this.update(currentMSecs)
+        if (i < this.currentAxes.length)
+            return this.currentAxes[i]
+            
+    }
+    
+        getAxis(currentMSecs,i) {
         this.update(currentMSecs)
         if (i < this.currentAxes.length)
             return this.currentAxes[i]
@@ -198,6 +205,15 @@ class ScratchGamepad {
                             },
                         },                    
                     },
+                       
+                    {
+                        "opcode": "bleconnect",
+                        "blockType": "command",
+                        "text": "connect to ESP32",
+                        "arguments": {
+                        },                    
+                    },   
+                       
                     {
                         "opcode": "rumble",
                         "blockType": "command",
