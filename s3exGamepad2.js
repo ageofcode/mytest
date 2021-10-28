@@ -97,7 +97,11 @@ class SingleGamepad {
     }
     
     bleconnect() {
-         alert("ok!")       
+         navigator.bluetooth.requestDevice(
+		{
+			acceptAllDevices: true,
+			optionalServices: ['5e87bd74-b350-4a6a-ae36-bb33e30499af']
+		})       
     }
     
         getAxis(currentMSecs,i) {
