@@ -97,10 +97,7 @@ class SingleGamepad {
     }
     
     bleconnect() {
-        this.update(currentMSecs)
-        if (i < this.currentAxes.length)
-            return this.currentAxes[i]
-            
+         alert("ok!")       
     }
     
         getAxis(currentMSecs,i) {
