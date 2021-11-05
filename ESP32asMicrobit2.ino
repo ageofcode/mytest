@@ -2,6 +2,10 @@
   Not work, get connected, and lost connect soon.
   modified from ESP32 Bluettoth library example uart-service 
   and ESP32 BluetoothButton
+  
+  https://github.com/microbit-more/mbit-more-v2/blob/master/src/block/index.js microbit more JS
+  https://github.com/yokobond/scratch-microbit-more/blob/trunk/src/block/index.js
+  
     Video: https://www.youtube.com/watch?v=oCMOYS71NIU
     Based on Neil Kolban example for IDF: https://github.com/nkolban/esp32-snippets/blob/master/cpp_utils/tests/BLE%20Tests/SampleNotify.cpp
     Ported to Arduino ESP32 by Evandro Copercini
