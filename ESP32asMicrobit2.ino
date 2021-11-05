@@ -1,4 +1,5 @@
 /*
+  Not work, get connected, and lost connect soon.
   modified from ESP32 Bluettoth library example uart-service 
   and ESP32 BluetoothButton
     Video: https://www.youtube.com/watch?v=oCMOYS71NIU
