@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Origin Trial Token, feature = WebUSB (For Chrome M57+), origin = https://webusb.github.io, expires = 2017-06-19 -->
+	<!-- It works on LuatOS lite ESP32-C3 board. USB CDC ACM data interface is 1, in and out endpoints are both 1. transferOut works.  
+	     ESP32-C3 access the input data from browser from USBSerial --->
+    <meta http-equiv="origin-trial" data-feature="WebUSB (For Chrome M57+)" data-expires="2017-06-19" content="Ag83MurQOa5N4SKRCqqtSlbycfe08s5LgUiqEI7J3jTk2NEIpRp7SLPz2i+EBDuXyf+AeRMdD6BI++kTSJmGzQEAAABReyJvcmlnaW4iOiJodHRwczovL3dlYnVzYi5naXRodWIuaW86NDQzIiwiZmVhdHVyZSI6IldlYlVTQjIiLCJleHBpcnkiOjE0OTc4OTM2OTV9">
+    <title>webUSB USB CDM ACM test </title>
+    
+  </head>
+  <body>
+    <p>
+      <button id="connect">Connect</button> 
+    </p>
+	    <p>
+      <button id="disconnect">Disconnect</button> </p> 
+	<p>
+	  <button id="sendText">Send </button> <br> <br>
+	       <span id="status"></span>
+	
+	          <div>Receiver</div>
+            <div id="receiverLines"> </div>
+		 
+	<script >
+	const receiverLines = document.getElementById('receiverLines');
+	const statusDisplay = document.getElementById('status');
+	const connectButton = document.getElementById('connect');
+	const disconnectButton =
+                   document.getElementById('disconnect');
+	const sendButton = document.getElementById('sendText');
+	let device;
+   connectButton.onclick = async function() {
+    device = await navigator.usb.requestDevice({ filters: [{ vendorId: 0x303A }] });
+	console.log('device: ' + device);
+	
+    await device.open()   // Begin a session.
+    await device.selectConfiguration(1) // Select configuration #1 for the device.
+	console.log('interface_number: ' + device.configuration.interfaces[2].interfaceNumber);
+	console.log('interface_number: ' + device.configuration.interfaces[0].interfaceNumber);
+    await device.claimInterface(1) // Request exclusive control over interface #1. 
+	await device.selectAlternateInterface(1, 0)
+/**	await device.controlTransferOut({
+            'requestType': 'class',
+            'recipient': 'interface',
+            'request': 0x22,
+            'value': 0x01, //set data line ready
+            'index': 0x01}); // this.interfaceNumber  **/
+	await  readLoop();
+	 }
+		
+	const readLoop = async function(){	
+       device.transferIn(1, 64).then(result => {
+        onReceive(result.data);
+        readLoop();
+      }, error => {
+        console.error(error);
+		statusDisplay.textContent = error;
+      });
+    };
+	
+	const onReceive = function(data){
+          let textDecoder = new TextDecoder();
+          console.log(textDecoder.decode(data));
+          if (data.getInt8() === 13) {
+            receiverLines.innerHTML = null;
+          } else {			  
+            receiverLines.innerHTML =  receiverLines.innerHTML +  textDecoder.decode(data);
+          }
+        };  
+	  
+	 sendButton.onclick = async function() {
+	  const encoder = new TextEncoder();
+      const data = encoder.encode("test");
+	  await device.transferOut(1, data);	 
+	 }
+/**
+.then(() => device.transferIn(1, 64)) // Waiting for 64 bytes of data from endpoint #5.
+.then(result => {
+  const decoder = new TextDecoder();
+  console.log('Received: ' + decoder.decode(result.data));
+})
+.catch(error => { console.error(error); });
+  connectButton.style.display = 'none';
+  disconnectButton.style.display = 'initial';
+};
+****/
+
+ disconnectButton.onclick = async () => {
+  await device.controlTransferOut({
+            'requestType': 'class',
+            'recipient': 'interface',
+            'request': 0x22,
+            'value': 0x00,
+            'index': 0x01}); //this.interfaceNumber
+  await device.close();
+
+  connectButton.style.display = 'initial';
+  disconnectButton.style.display = 'none';
+  };
+	
+	</script>
+  </body>
+</html>
